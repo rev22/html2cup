@@ -4,6 +4,8 @@ htmlcup = htmlcup.extendObject
   _: (x)->
     @nesting.spaced = 1
     htmlcup.printHtml x
+  _n: (x)->
+    htmlcup.printHtml x
   modApply: (x)-> x.apply @
   nesting:
     level: 0
@@ -13,7 +15,7 @@ htmlcup = htmlcup.extendObject
     return spacing if justTest
     @_ spacing
   compileTag: (tagName, isVoid, isRawText) -> tag = { tagName, isVoid, isRawText }; (args...) ->
-    # @autoSpacing()
+    @autoSpacing()
     @printHtml "<#{tagName}"
     for arg in args
       if typeof arg is 'function'
@@ -28,7 +30,7 @@ htmlcup = htmlcup.extendObject
         else
           @printHtml " #{x}"
     @printHtml '>'
-    # @nesting.spaced = 0
+    @nesting.spaced = 0
     return if isVoid
     if f
       oldNesting = @nesting
@@ -45,7 +47,9 @@ htmlcup = htmlcup.extendObject
         @printHtml s
       else
         @printHtml @quoteTagText s
+    @autoSpacing()
     @printHtml '</' + tagName + '>'
+    @nesting.spaced = 0
 
 htmlcup = htmlcup.compileLib()
 
