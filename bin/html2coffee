@@ -1,0 +1,132 @@
+#!/usr/bin/env coffee
+
+[ progname, args ] = do->
+  { argv } = process
+  args = argv.slice(0)
+  args.shift() if /([/]|^)coffee([.].*)?$/.test args[0]
+  progname = args.shift()
+  [ progname, args ]
+
+{ stdin, stdout, stderr } = process
+
+fs = require "fs"
+
+print = (x)-> fs.writeSync 1, "#{x}"
+echo = (x)-> fs.writeSync 1, "#{x}\n"
+log = (x)-> stderr.write "#{x}\n"
+fail = (x)-> stderr.write "#{x}\n"; process.exit()
+peek = ()->
+  args = (x for x in arguments)
+  x = args.pop()
+  while args.length
+    n = args.shift()
+    stderr.write "#{n}: "
+  stderr.write "#{JSON.stringify x}\n"; x
+
+if args.length is 0
+  throw "Usage: #{progname} HTML-FILE >COFFEE-FILE"
+
+
+coffeePrinter =
+  print: print
+  echo: echo
+  run: (x)-> x.apply @
+  indentation: 0
+  p: (x, r)->
+    @print Array(@indentation + 1).join "    "
+    @echo x
+    if r?
+      oldIndentation = @indentation
+      try
+        @indentation++
+        @.run(r)
+      finally
+        @indentation = oldIndentation
+    
+
+
+path = require 'path'
+Browser = require 'zombie'
+browser = new Browser
+
+
+q = '"'
+oldQuot = (x)-> q + (x.replace(/["\\]/g, ((x)-> "\\#{x}"))) + q # "
+wQuot = (x)-> q + (x.replace(/["\\\t\r\n]/g, ((x)-> "\\#{x}")).replace(/\\\t/g, "\\t").replace(/\\\r/g, "\\r").replace(/\\\n/g, "\\n")) + q # "
+kQuot = (x)->
+  return quot x if (x.length is 0) or (/[^$a-zA-Z0-9_]/).test x
+  x
+
+quot = wQuot
+
+file = args[0]
+
+url = 'file://' + path.resolve(file)
+
+log "loading #{url}"
+browser.visit url, runScripts:false, loadCss:false, ->
+  try
+    { doctype, head, body } = browser.document
+
+    throw "document.doctype is missing1" unless doctype?
+    throw "document.head is missing!" unless head?
+    throw "document.body is missing!" unless body?
+
+    coffeePrinter.run ->
+      attributes = (x)->
+        r = []
+        for y in (x.attributes ? [])
+          { name, value } = y
+          if 'string' is typeof name and 'string' is typeof value
+            r.push "#{kQuot y.name}:#{quot y.value}, "
+        r.join ''
+      printTree = (indentation, line, obj)=>
+        pt = (line, obj)-> printTree(indentation + 1, line, obj)
+        autoSpacing = -> "\n" + Array(indentation+1).join("    ")
+        @p "#{line}", ->
+          for x in obj.childNodes
+            { nodeType } = x
+            if nodeType is 3
+              { textContent } = x
+              if textContent?
+                # if autoSpacing() is textContent
+                #   true
+                # else if /^\n(    )*$/.test textContent
+                #   true
+                else if /^[ \t\r\n]*$/.test textContent
+                  @p "@_ #{wQuot x.textContent}" # , #{wQuot autoSpacing()}"
+                else
+                  @p "@_ #{quot x.textContent}" # , #{wQuot autoSpacing()}"
+              else
+                throw "Text node without textContent property!"
+            else if nodeType is 1
+              { tagName } = x
+              tagName = tagName.toLowerCase()
+              a = attributes(x)
+              if (c = x.childNodes)? and c.length is 1 and c[0].nodeType is 3 and c[0].textContent?
+                @p "@#{tagName} #{a}#{quot c[0].textContent}"
+              else
+                pt "@#{tagName} #{a}->", x
+            else if nodeType is 10
+              # { tagName } = x
+              # tagName ?= 'html'
+              # a = attributes(x)
+              # pt "@#{tagName.toLowerCase()} #{a}->", x
+              @p "@docType #{quot (x.name ? "html") }"
+            else if nodeType is 8
+              # throw "here #{x.name}"
+              # warn(JSON.stringify(x))
+              # { textContent 
+              # split(/\r?\n/)
+              @p "@_ #{quot  "<!--#{x.data}-->" }"
+            else
+              throw "# Strange node type encountered: #{nodeType}"
+      printTree 0, "require('./htmlcup-loader').modApply ->", browser.document
+        # @p "@docType #{quot doctype.name}"
+        # printTree "do =>", browser.document
+        # @p "@html ->", ->
+        #   printTree "@head ->", head
+        #   printTree "@body ->", body
+    
+  finally
+    browser.close()
