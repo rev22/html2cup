@@ -3,19 +3,55 @@
 htmlcup = htmlcup.extendObject
   _: (x)->
     @nesting.spaced = 1
+    htmlcup.printHtml x if x?
+    @
+  self: (x)-> @[x + 'Self'] ? @
+  S: ()->
+    x =
+      autoSpaceSelf: @self('autoSpace')
+      noAutoSpace: true
+      modApplyTag: (tag, f)-> @self('autoSpace').modApplyTag tag, f; @
+    x.__proto__ = @self('autoSpace')
+    x
+  SS: ()->
+    x = 
+      autoSpaceSelf: @self('autoSpace')
+      noAutoSpaceAfter: true
+      modApplyTag: (tag, f)-> @self('autoSpace').modApplyTag tag, f; @
+    x.__proto__ = @self('autoSpace')
+    x
+  _n: (x = "\n")->
     htmlcup.printHtml x
-  _n: (x)->
-    htmlcup.printHtml x
-  modApply: (x)-> x.apply @
+    @
+  modApply: (f)-> f.apply @; @
+  modApplyTag: (tag, f)->
+    oldNesting = @nesting
+    try
+      @nesting =
+        level: oldNesting.level + 1
+        tag: tag
+        parent: oldNesting
+        spaced: oldNesting.spaced
+      @modApply f
+    finally
+      oldNesting.spaced = @nesting.spaced 
+      @nesting = oldNesting
+    @
   nesting:
     level: 0
-  autoSpacing: (justTest)->
+  autoSpace: (justTest)->
+    return if @noAutoSpace
     return if @nesting.spaced
     spacing = "\n" + Array(@nesting.level + 1).join("    ")
     return spacing if justTest
     @_ spacing
+  commentTag: (x)->
+    @autoSpace() unless @noAutoSpaceBefore
+    @printHtml "<!--#{x}-->"
+    @nesting.spaced = if @noAutoSpace or @noAutoSpaceAfter then 1 else 0
+    @
   compileTag: (tagName, isVoid, isRawText) -> tag = { tagName, isVoid, isRawText }; (args...) ->
-    @autoSpacing()
+    @autoSpace() unless @noAutoSpaceBefore
     @printHtml "<#{tagName}"
     for arg in args
       if typeof arg is 'function'
@@ -30,26 +66,24 @@ htmlcup = htmlcup.extendObject
         else
           @printHtml " #{x}"
     @printHtml '>'
-    @nesting.spaced = 0
-    return if isVoid
+    if isVoid
+      @nesting.spaced = if @noAutoSpace or @noAutoSpaceAfter then 1 else 0
+      return
+    else
+      @nesting.spaced = 0
     if f
-      oldNesting = @nesting
-      try
-        @nesting =
-          level: oldNesting.level + 1
-          tag: tag
-          parent: oldNesting
-        f.apply @
-      finally
-        @nesting = oldNesting
-    if s
+      @modApplyTag tag, f
+    else if s?
       if isRawText
-        @printHtml s
+        @_ s
       else
-        @printHtml @quoteTagText s
-    @autoSpacing()
+        @_ @quoteTagText(s)
+    else
+      @nesting.spaced = 1
+    @autoSpace()
     @printHtml '</' + tagName + '>'
-    @nesting.spaced = 0
+    @nesting.spaced = if @noAutoSpace or @noAutoSpaceAfter then 1 else 0
+    @
 
 htmlcup = htmlcup.compileLib()
 
