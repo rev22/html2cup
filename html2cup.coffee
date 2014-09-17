@@ -1,9 +1,24 @@
 { htmlcup } = require 'htmlcup'
 
 htmlcup = htmlcup.extendObject
+  withPhpChunks: (chunks)->
+    orig = @
+    phpLib = require './phpLib'
+    phpLib.chunks = chunks
+    lib = orig.extendObject
+      phpLib: phpLib 
+      origLib: orig
+      printHtml: (x)-> @origLib.printHtml(@phpLib.dress(x))
+      quoteText: (x)-> @phpLib.dress(@origLib.quoteText(x))
+      phpChunk: (k, chunk)->
+        @autoSpace() unless @noAutoSpaceBefore
+        @origLib.printHtml chunk
+        @nesting.spaced = if @noAutoSpace or @noAutoSpaceAfter then 1 else 0
+        @
+    lib.compileLib()
   _: (x)->
     @nesting.spaced = 1
-    htmlcup.printHtml x if x?
+    @printHtml x if x?
     @
   self: (x)-> @[x + 'Self'] ? @
   S: ()->
@@ -21,7 +36,7 @@ htmlcup = htmlcup.extendObject
     x.__proto__ = @self('autoSpace')
     x
   _n: (x = "\n")->
-    htmlcup.printHtml x
+    @printHtml x
     @
   modApply: (f)-> f.apply @; @
   modApplyTag: (tag, f)->
