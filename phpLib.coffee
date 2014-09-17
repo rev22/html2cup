@@ -6,6 +6,10 @@ module.exports =
   apply: (x)-> x.apply @
   dress: (x)-> x.replace /PHP[0-9a-z]{8}/g, (x)=> @chunks[x.substring(3,11)] ? "FAIL#{x}"
   memberp: (x)-> @chunks[x]?
+  idp: (x)-> /PHP[0-9a-z]{8}/.test(x) and @memberp(x.substring(3,11))
+  id2key: (x)->
+    if /PHP[0-9a-z]{8}/.test(x)
+      x.substring(3,11)
   split: (x)->
     l = []
     p = ""

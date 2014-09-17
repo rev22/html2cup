@@ -12,6 +12,10 @@ htmlcup = htmlcup.extendObject
       quoteText: (x)-> @phpLib.dress(@origLib.quoteText(x))
       phpChunk: (k, chunk)->
         @autoSpace() unless @noAutoSpaceBefore
+        unless chunk?
+          chunk = @chunks[k]
+          unless chunk?
+            throw "Could not find chuck with key #{k}"
         @origLib.printHtml chunk
         @nesting.spaced = if @noAutoSpace or @noAutoSpaceAfter then 1 else 0
         @
