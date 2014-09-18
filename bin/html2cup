@@ -191,9 +191,11 @@ browser.visit url, runScripts:false, loadCss:false, ->
                   "@_()."
               if nodeType is 'phpchunk'
                 dressed = php.dress(x.textContent)
-                if (match = /^<[?]php if [(](.*)[)] : [?]>$/.exec dressed)
+                if (match = /^<[?]php if [(](.*)[)] *: [?]>$/.exec dressed)
                   @p "#{pre}phpIf #{rQuot "#{match[1]}", indentation}"
-                else if dressed is '<?php else : ?>'
+                else if (match = /^<[?]php elseif [(](.*)[)] *: [?]>$/.exec dressed)
+                  @p "#{pre}phpElseif #{rQuot "#{match[1]}", indentation}"
+                else if (match = /^<[?]php else *: [?]>$/.exec dressed)
                   @p "#{pre}phpElse()"
                 else if dressed is '<?php endif; ?>'
                   @p "#{pre}phpEndif()"
