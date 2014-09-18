@@ -190,7 +190,15 @@ browser.visit url, runScripts:false, loadCss:false, ->
                 else
                   "@_()."
               if nodeType is 'phpchunk'
-                @p "#{pre}phpChunk '#{php.id2key x.textContent}', #{rQuot php.dress(x.textContent), indentation}"
+                dressed = php.dress(x.textContent)
+                if (match = /^<[?]php if [(](.*)[)] : [?]>$/.exec dressed)
+                  @p "#{pre}phpIf #{rQuot "#{match[1]}", indentation}"
+                else if dressed is '<?php else : ?>'
+                  @p "#{pre}phpElse()"
+                else if dressed is '<?php endif; ?>'
+                  @p "#{pre}phpEndif()"
+                else
+                  @p "#{pre}phpChunk '#{php.id2key x.textContent}', #{rQuot dressed, indentation}"
                 continue
               { tagName } = x
               tagName = tagName.toLowerCase()
@@ -231,7 +239,7 @@ browser.visit url, runScripts:false, loadCss:false, ->
           else
             " #{quot x}"
           coffeePrinter.p "    '#{h}':#{x}"
-        coffeePrinter.p (if refcoffee then ";" else "")
+        coffeePrinter.p (if refcoffee then ";\n" else "")
 
       variant = ""
       php?.apply -> variant = ".withPhpChunks(phpChunks)"

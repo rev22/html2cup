@@ -19,6 +19,10 @@ htmlcup = htmlcup.extendObject
         @origLib.printHtml chunk
         @nesting.spaced = if @noAutoSpace or @noAutoSpaceAfter then 1 else 0
         @
+      phpIf0:     -> @phpIf "0"
+      phpIf:   (x)-> @phpChunk null, "<?php if (#{x}) : ?>"
+      phpElse:    -> @phpChunk null, "<?php else : ?>"
+      phpEndif:   -> @phpChunk null, "<?php endif; ?>"
     lib.compileLib()
   _: (x)->
     @nesting.spaced = 1
