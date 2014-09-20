@@ -84,7 +84,7 @@ kQuot = (x)->
 rQuot = (x, indentation)->
   if refcoffee and /[^a-zA-Z -_.,]/.test x
     x = "''''\n" + x
-    'do->' + x.replace(/(\n|^)/g, "\n" + Array(indentation + 3).join('    '))
+    x.replace(/(\n|^)/g, "\n" + Array(indentation + 3).join('    '))
   else
     wQuot x
 
@@ -109,6 +109,19 @@ inBody?.apply ->
   tempFiles.push(@temp = file + '.temp-in-body.html')
   fs.writeFileSync @temp, @x
   file = @temp
+
+entQuot = (x) ->
+    x.replace /[&<>\" ]/g, (c) ->
+      if c is '<'
+        '&lt;'
+      else if c is '>'
+        '&gt;' # is this necessary?
+      else if c is '&'
+        '&amp;'
+      else if c is '"'
+        '&quot;'
+      else
+        "&nbsp;"
 
 url = 'file://' + path.resolve(file)
 
@@ -162,7 +175,7 @@ browser.visit url, runScripts:false, loadCss:false, ->
               if textContent?
                 if autoSpacing() is textContent
                   spaced = 1
-                else if (r = /^(\n*)\n[\t ]*$/.exec textContent)?
+                else if (r = /^((\n[^\n\S]*)*)\n[\t ]*$/.exec textContent)?
                   if r[1].length
                     post = if r[1] is "\n"
                       "()"
@@ -174,7 +187,7 @@ browser.visit url, runScripts:false, loadCss:false, ->
                   @p "@_ #{rQuot textContent, indentation}" # , #{wQuot autoSpacing()}"
                   spaced = 1
                 else if textContent.length
-                  @p "@_ #{rQuot textContent, indentation}" # , #{wQuot autoSpacing()}"
+                  @p "@_ #{rQuot entQuot(textContent), indentation}" # , #{wQuot autoSpacing()}"
                   spaced = 1
               else
                 throw "Text node without textContent property!"
@@ -201,6 +214,7 @@ browser.visit url, runScripts:false, loadCss:false, ->
                   @p "#{pre}phpEndif()"
                 else
                   @p "#{pre}phpChunk '#{php.id2key x.textContent}', #{rQuot dressed, indentation}"
+                spaced = 0
                 continue
               { tagName } = x
               tagName = tagName.toLowerCase()
