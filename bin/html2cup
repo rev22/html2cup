@@ -152,7 +152,7 @@ browser.visit url, runScripts:false, loadCss:false, ->
           if includeChunks
             n = []
             for y in childNodes
-              if y.nodeType is 3
+              if y.nodeType is 3 and obj.tagName isnt 'SCRIPT' and obj.tagName isnt 'STYLE'
                 for z in php.split y.textContent
                   n.push
                     textContent: z
@@ -180,7 +180,7 @@ browser.visit url, runScripts:false, loadCss:false, ->
                     post = if r[1] is "\n"
                       "()"
                     else
-                      " #{quot r[1] }"
+                      " #{quot entQuot(r[1]) }"
                     @p "@_n#{post}"
                   spaced = 1
                 else if /^[ \t\r\n]*$/.test textContent
@@ -219,8 +219,12 @@ browser.visit url, runScripts:false, loadCss:false, ->
               { tagName } = x
               tagName = tagName.toLowerCase()
               a = attributes(x)
-              if (c = x.childNodes)? and c.length is 1 and c[0].nodeType is 3 and (textContent = c[0].textContent)? and (/[^ \t\r\n]/.test(textContent)) and (!includeChunks or php.hasAnyChunk textContent)
-                @p "#{pre}#{tagName} #{a}#{rQuot c[0].textContent, indentation}"
+              textContent = null
+              isRaw = (tagName is "script" or tagName is "style")
+              if (c = x.childNodes)? and c.length is 1 and (isRaw or (c[0].nodeType is 3 and (textContent = c[0].textContent)? and (/[^ \t\r\n]/.test(textContent)) and (!includeChunks or php.hasAnyChunk textContent)))
+                content = c[0].textContent
+                content = entQuot content unless isRaw
+                @p "#{pre}#{tagName} #{a}#{rQuot content, indentation}"
               else if (c = x.childNodes)? and c.length is 0
                 if a is ""
                   a = "()"
