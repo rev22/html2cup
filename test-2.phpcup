@@ -1,0 +1,3 @@
+require('html2cup').withPhpChunks().modApply ->
+    @_().a foo:@php("<?= $a ?>"), ->
+        @_ "bar"

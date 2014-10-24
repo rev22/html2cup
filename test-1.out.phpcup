@@ -1,0 +1,9 @@
+phpChunks =
+    '0ca8c1ed':
+      ''''
+      <?= $a ?>
+;
+
+require('html2cup').withPhpChunks(phpChunks).modApply ->
+    @_().a foo:@php("<?= $a ?>"), ->
+        @_ "bar"

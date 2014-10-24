@@ -141,7 +141,13 @@ browser.visit url, runScripts:false, loadCss:false, ->
         for y in (x.attributes ? [])
           { name, value } = y
           if 'string' is typeof name and 'string' is typeof value
-            r.push "#{kQuot y.name}:#{quot y.value}, "
+            if (chunkContent = php?.idToChunk(value))?
+              value = """
+                @php(#{quot chunkContent})
+                """
+            else
+              value = quot value
+            r.push "#{kQuot name}:#{value}, "
         r.join ''
       printTree = (indentation, line, obj)=>
         pt = (line, obj)-> printTree(indentation + 1, line, obj)

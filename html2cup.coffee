@@ -1,7 +1,7 @@
 { htmlcup } = require 'htmlcup'
 
 htmlcup = htmlcup.extendObject
-  withPhpChunks: (chunks)->
+  withPhpChunks: (chunks = {})->
     orig = @
     phpLib = require './phpLib'
     phpLib.chunks = chunks
@@ -13,7 +13,7 @@ htmlcup = htmlcup.extendObject
       phpChunk: (k, chunk)->
         @autoSpace() unless @noAutoSpaceBefore
         unless chunk?
-          chunk = @chunks[k]
+          chunk = @phpLib.chunks[k]
           unless chunk?
             throw "Could not find chuck with key #{k}"
         @origLib.printHtml chunk
@@ -24,6 +24,7 @@ htmlcup = htmlcup.extendObject
       phpElseif:  (x)-> @phpChunk null, "<?php elseif (#{x}): ?>"
       phpElse:       -> @phpChunk null, "<?php else: ?>"
       phpEndif:      -> @phpChunk null, "<?php endif; ?>"
+      php:        (x)-> @phpLib.strip(x)
     lib.compileLib()
   _: (x)->
     @nesting.spaced = 1
