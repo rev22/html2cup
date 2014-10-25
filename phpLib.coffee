@@ -46,7 +46,8 @@ module.exports =
     x = x.replace /php[0-9a-z]{8}=""/g, (x)=> @chunks[x.substring(3,11)] ? "FAIL#{x}"
     x = x.replace /PHP[0-9a-z]{8}/g, (x)=> @chunks[x.substring(3,11)] ? "FAIL#{x}"
     x
-  idp: (x)-> /^PHP[0-9a-z]{8}$/.test(x) and @memberp(x.substring(3,11))
+  idp: (x)-> /^PHP[0-9a-z]{8}/.test(x) and @memberp(x.substring(3,11))
+  idp_strict: (x)-> /^PHP[0-9a-z]{8}$/.test(x) and @memberp(x.substring(3,11))
   id2key: (x)->
     if /PHP[0-9a-z]{8}/.test(x)
       x.substring(3,11)
@@ -69,6 +70,6 @@ module.exports =
         return true
     return false
   idToChunk: (x)->
-    if @idp x
+    if @idp_strict x
       if y = @id2key(x)
         @chunks[y]
