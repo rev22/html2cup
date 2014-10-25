@@ -200,7 +200,7 @@ browser.visit url, runScripts:false, loadCss:false, ->
             else if nodeType is 1 or nodeType is 'phpchunk'
               pre = if spaced
                 if isLast
-                  "@SS()."
+                  "@Z()."
                 else
                   "@"
               else
@@ -212,12 +212,16 @@ browser.visit url, runScripts:false, loadCss:false, ->
                 dressed = php.dress(x.textContent)
                 if (match = /^<[?]php if [(](.*)[)] *: [?]>$/.exec dressed)
                   @p "#{pre}phpIf #{rQuot "#{match[1]}", indentation}"
+                if (match = /^<[?]php foreach [(](.*)[)] *: [?]>$/.exec dressed)
+                  @p "#{pre}phpForeach #{rQuot "#{match[1]}", indentation}"
                 else if (match = /^<[?]php elseif [(](.*)[)] *: [?]>$/.exec dressed)
                   @p "#{pre}phpElseif #{rQuot "#{match[1]}", indentation}"
                 else if (match = /^<[?]php else *: [?]>$/.exec dressed)
                   @p "#{pre}phpElse()"
                 else if dressed is '<?php endif; ?>'
                   @p "#{pre}phpEndif()"
+                else if dressed is '<?php endforeach; ?>'
+                  @p "#{pre}phpEndforeach()"
                 else
                   @p "#{pre}phpChunk '#{php.id2key x.textContent}', #{rQuot dressed, indentation}"
                 spaced = 0

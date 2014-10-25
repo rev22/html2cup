@@ -21,9 +21,11 @@ htmlcup = htmlcup.extendObject
         @
       phpIf0:        -> @phpIf "0"
       phpIf:      (x)-> @phpChunk null, "<?php if (#{x}): ?>"
+      phpForeach: (x)-> @phpChunk null, "<?php foreach (#{x}): ?>"
       phpElseif:  (x)-> @phpChunk null, "<?php elseif (#{x}): ?>"
       phpElse:       -> @phpChunk null, "<?php else: ?>"
       phpEndif:      -> @phpChunk null, "<?php endif; ?>"
+      phpEndforeach: -> @phpChunk null, "<?php endforeach; ?>"
       php:        (x)-> @phpLib.strip(x)
     lib.compileLib()
   _: (x)->
@@ -38,7 +40,8 @@ htmlcup = htmlcup.extendObject
       modApplyTag: (tag, f)-> @self('autoSpace').modApplyTag tag, f; @
     x.__proto__ = @self('autoSpace')
     x
-  SS: ()->
+  SS: -> @Z.apply @, arguments
+  Z: ()->
     x = 
       autoSpaceSelf: @self('autoSpace')
       noAutoSpaceAfter: true
