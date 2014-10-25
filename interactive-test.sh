@@ -16,5 +16,5 @@ die() {
 
 git diff --quiet -- test-cases/ || die "There are unstaged changes in test-cases/; please stage or discard them before running $0 again!"
 coffeemake --rebuild test-cases/*
-git add -up test-cases/
+git diff test-cases/
 

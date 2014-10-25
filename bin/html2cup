@@ -212,7 +212,7 @@ browser.visit url, runScripts:false, loadCss:false, ->
                 dressed = php.dress(x.textContent)
                 if (match = /^<[?]php if [(](.*)[)] *: [?]>$/.exec dressed)
                   @p "#{pre}phpIf #{rQuot "#{match[1]}", indentation}"
-                if (match = /^<[?]php foreach [(](.*)[)] *: [?]>$/.exec dressed)
+                else if (match = /^<[?]php foreach [(](.*)[)] *: [?]>$/.exec dressed)
                   @p "#{pre}phpForeach #{rQuot "#{match[1]}", indentation}"
                 else if (match = /^<[?]php elseif [(](.*)[)] *: [?]>$/.exec dressed)
                   @p "#{pre}phpElseif #{rQuot "#{match[1]}", indentation}"
