@@ -227,10 +227,14 @@ browser.visit url, runScripts:false, loadCss:false, ->
               a = attributes(x)
               textContent = null
               isRaw = (tagName is "script" or tagName is "style")
-              if (c = x.childNodes)? and c.length is 1 and (isRaw or (c[0].nodeType is 3 and (textContent = c[0].textContent)? and (/[^ \t\r\n]/.test(textContent)) and (!includeChunks or php.hasAnyChunk textContent)))
+              if (c = x.childNodes)? and c.length is 1 and (isRaw or (c[0].nodeType is 3 and (textContent = c[0].textContent)? and (/[^ \t\r\n]/.test(textContent)) and (!includeChunks or !php.hasAnyChunk textContent)))
                 content = c[0].textContent
-                content = entQuot content unless isRaw
-                @p "#{pre}#{tagName} #{a}#{rQuot content, indentation}"
+                if isRaw
+                  content = rQuot content, indentation
+                else
+                  content = entQuot content
+                  content = quot content
+                @p "#{pre}#{tagName} #{a}-> \@_ #{content}"
               else if (c = x.childNodes)? and c.length is 0
                 if a is ""
                   a = "()"

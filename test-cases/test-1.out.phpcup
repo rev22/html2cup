@@ -5,5 +5,4 @@ phpChunks =
 ;
 
 require('html2cup').withPhpChunks(phpChunks).modApply ->
-    @_().a foo:@php("<?= $a ?>"), ->
-        @_ "bar"
+    @_().a foo:@php("<?= $a ?>"), -> @_ "bar"

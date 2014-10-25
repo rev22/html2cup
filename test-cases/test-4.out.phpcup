@@ -1,0 +1,18 @@
+phpChunks =
+    'f309d694':
+      ''''
+      <?php ?>
+;
+
+require('html2cup').withPhpChunks(phpChunks).modApply ->
+    @_().div ->
+        @_n "\n&nbsp;"
+        @phpChunk 'f309d694', "<?php ?>"
+        @_n "\n&nbsp;"
+    @div -> @_ "\n&nbsp;\n"
+    @div -> @_ "&nbsp;"
+    @div ->
+        @_ "&nbsp;"
+        @phpChunk 'f309d694', "<?php ?>"
+        @_ "&nbsp;"
+    @_n()
