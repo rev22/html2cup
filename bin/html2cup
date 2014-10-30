@@ -1,5 +1,9 @@
 #!/usr/bin/env coffee
 
+# Copyright (c) 2014 Michele Bini
+
+# MIT license
+
 [ progname, args ] = do->
   { argv } = process
   args = argv.slice(0)

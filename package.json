@@ -2,7 +2,7 @@
     "name": "html2cup",
     "version": "1.2.0",
     "author": "Michele Bini <michele.bini@gmail.com>",
-    "description": "....",
+    "description": "Convert HTML and PHP views to CoffeeScript and back",
     "keywords": [ "HTML", "CoffeeScript" ],
     "homepage": "http://github.com/rev22/htmlcup",
     "bugs": { "url": "http://github.com/rev22/htmlcup/issues" },
@@ -34,5 +34,5 @@
 	"url": "http://github.com/rev22/htmlcup.git"
     },
     "main": "html2cup.coffee",
-    "license": "GPL3"
+    "license": "MIT"
 }

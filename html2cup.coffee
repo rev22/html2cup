@@ -1,3 +1,7 @@
+# Copyright (c) 2014 Michele Bini
+
+# MIT license
+
 { htmlcup } = require 'htmlcup'
 
 htmlcup = htmlcup.extendObject

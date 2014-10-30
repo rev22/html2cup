@@ -1,3 +1,7 @@
+# Copyright (c) 2014 Michele Bini
+
+# MIT license
+
 module.exports =
   magic: 'PHP'
   chunks: { }
