@@ -1,32 +1,33 @@
 TARGETS=
 
+
 all: $(TARGETS)
 
 clean:
 	rm -f $(TARGETS)
 
-%.html: %.html.coffee htmlcup-loader.coffee
+%.html: %.html.coffee
 	(sh -c "coffee $< >$@.new" && mv $@.new $@ && touch -r $< $@) || rm -f $@
 
-%.regen.html.coffee: %.html bin/html2coffee
-	(sh -c "bin/html2coffee $< >$@.new" && mv $@.new $@) || rm -f $@
+%.regen.html.coffee: %.html bin/html2cup
+	(sh -c "bin/html2cup $< >$@.new" && mv $@.new $@) || rm -f $@
 
-%.html: %.htmlcup bin/html2coffee
-	(sh -c "bin/html2coffee $< >$@.new" && mv $@.new $@) || rm -f $@
+%.html: %.htmlcup bin/html2cup
+	(sh -c "bin/html2cup $< >$@.new" && mv $@.new $@) || rm -f $@
 
 %.js: %.coffee
 	coffee -c $<
 
 
 %.php: %.in.phpcup
-	cup2php $< $@
+	script/cup2php $< $@
 
 %.phpcup: %.in.php
-	php2cup_body $< $@
+	script/php2cup_body $< $@
 
 %.out.php: %.phpcup
-	cup2php $< $@
+	script/cup2php $< $@
 
 %.out.phpcup: %.php
-	php2cup_body $< $@
+	script/php2cup_body $< $@
 
