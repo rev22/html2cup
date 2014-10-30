@@ -1,0 +1,5 @@
+html2cup: Convert HTML and PHP views to CoffeeScript and back.
+
+Copyright (c) 2014 Michele Bini <michele.bini@gmail.com>
+
+MIT License
