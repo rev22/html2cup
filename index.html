@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" manifest="coffeeconsole.appcache" style="height:100%"><meta charset="utf-8"><title>html2cup - Convert HTML to CoffeeScript and back!</title><meta id="meta" name="viewport" content="width=device-width, user-scalable=no, initial-scale=1"><style>body { background:black; color: #ddd; }
+a { color:#5af; }
+a:visited { color:#49f; }
+a:hover { color:#6cf; }
+select, textarea { border: 1px solid #555; }</style><body style="height:100%;margin:0;overflow:auto"><div id="console" tabindex="0" style="height:100%;display:table;width:100%;max-width:100%"><div style="display:table-row;min-height:1em"><div style="max-height:5em;overflow:hidden;position:relative;display:block"><div style="float:left;width:100%"><style>div.thisHeader, .thisHeader div { text-align:center; }</style><div class="consoleHeader"><style>select { min-width:5em; max-width:30%; width:18em; }
+select, button { font-size:inherit; text-align:center;   }
+.button { display:inline-block; }
+button, .button, input, select:not(:focus):not(:hover) { color:white; background:black; }
+/* select option:not(:checked) { color:red !important; background:black !important; } */
+/* option:active, option[selected], option:checked, option:hover, option:focus { background:#248 !important; } */
+button, .button { min-width:5%; font-size:150%; border: 2px outset grey; }
+button:active, .button.button-on { border: 2px inset grey; background:#248; }
+.button input[type="checkbox"] { display:none; }
+.arrow { font-weight:bold;  }
+.editArea { height:100%;width:100%;box-sizing:border-box; }</style><div class="thisHeader"><select disabled="1"><option>HTML</option><option>PHP</option></select><button id="fromButton" class="arrow">«</button><label id="autoButton" class="button button-on"><input type="checkbox" checked="1" onchange="this.parentNode.setAttribute(&quot;class&quot;, &quot;button button-&quot; + (this.checked ? &quot;on&quot; : &quot;off&quot;))"><span id="autoButtonText">Auto</span></label><button id="toButton" class="arrow">»</button><select disabled="1"><option>CoffeeScript (htmlcup)</option><option>Reflective CoffeeScript (htmlcup)</option></select></div></div></div></div></div><div style="position:relative;height:100%;overflow:hidden;display:table-row"><div style="position:relative;width:100%;height:100%;min-height:20em"><div style="position:absolute;top:0;right:0;left:0;bottom:0;overflow:auto"><div style="width:200%;max-width:50em;min-width:100%;height:100%;overflow:hidden"><div style="position:relative;width:100%;height:100%;display:table"><style>textarea { background: black; color: #ddd; }</style><div style="position:relative;display:table-cell;width:50%"><div style="position:absolute;top:0;right:0;left:0;bottom:0;overflow:hidden"><textarea id="htmlArea" class="editArea"></textarea></div></div><div style="position:relative;display:table-cell;width:50%"><div style="position:absolute;top:0;right:0;left:0;bottom:0;overflow:hidden"><textarea id="htmlcupArea" class="editArea"></textarea></div></div></div></div></div></div></div><style>div.thisFooter, .thisFooter div { text-align:center; }</style><div class="thisFooter" id="footer" style="display:table-row"><b><a href="https://github.com/rev22/html2cup">html2cup</a></b><span><span>: </span><i>Convert HTML to Coffeescript and back!</i></span> &bull; <a href="https://github.com/rev22/htmlcup">htmlcup</a> &bull; <a href="https://github.com/jashkenas/coffeescript">Coffeescript</a> &bull; <a href="https://github.com/rev22/reflective-coffeescript">Reflective Coffeescript</a></div></div><script src="https://github.com/ajaxorg/ace-builds/raw/master/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script><script src="pack.js?xxx"></script><script type="text/javascript">(function () {
+        var inject;
+        inject = function(options, callback) {
+          var baseUrl, load;
+          baseUrl = options.baseUrl || "../../src-noconflict";
+          load = function(path, callback) {
+            var head, s;
+            head = document.getElementsByTagName("head")[0];
+            s = document.createElement("script");
+            s.src = baseUrl + "/" + path;
+            head.appendChild(s);
+            s.onload = s.onreadystatechange = function(_, isAbort) {
+              if (isAbort || !s.readyState || s.readyState === "loaded" || s.readyState === "complete") {
+                s = s.onload = s.onreadystatechange = null;
+                if (!isAbort) {
+                  callback();
+                }
+              }
+            };
+          };
+          if (true) {
+            ace.config.loadModule("ace/ext/textarea", function() {
+              var areas, event, i;
+              if (false) {
+                event = ace.require("ace/lib/event");
+                areas = document.getElementsByTagName("textarea");
+                i = 0;
+                while (i < areas.length) {
+                  event.addListener(areas[i], "click", function(e) {
+                    if (e.detail === 3) {
+                      ace.transformTextarea(e.target, options.ace);
+                    }
+                  });
+                  i++;
+                }
+              }
+              callback && callback();
+            });
+          }
+        };
+        return inject({}, function() {
+          var a, x, _fn, _i, _len, _ref;
+          _ref = ((function() {
+            var _j, _len, _ref, _results;
+            _ref = document.getElementsByClassName("editArea");
+            _results = [];
+            for (_j = 0, _len = _ref.length; _j < _len; _j++) {
+              x = _ref[_j];
+              _results.push(x);
+            }
+            return _results;
+          })()).reverse();
+          _fn = function(a, e) {
+            e = ace.require("ace/ext/textarea").transformTextarea(a);
+            a.setupTransform(e);
+            a.onchange = function() {
+              e.setValue(this.value, -1);
+            };
+            e.on("change", function() {
+              a.value = e.getValue();
+              if (typeof a.oninput === "function") {
+                a.oninput();
+              }
+            });
+            e.on("blur", function() {
+              a.value = e.getValue();
+              if (typeof a.onblur === "function") {
+                a.onblur();
+              }
+            });
+            return e.on("focus", function() {
+              if (typeof a.onfocus === "function") {
+                a.onfocus();
+              }
+            });
+          };
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            a = _ref[_i];
+            _fn(a, ace.require("ace/ext/textarea").transformTextarea(a));
+          }
+        });
+      })();
+</script></body></html>

@@ -1,0 +1,568 @@
+commit e20f026751dd8b83e72e0ac532f84f38fc9b2d1a
+Author: Michele Bini <michele.bini@gmail.com>
+Date:   Fri Oct 31 10:01:04 2014 +0100
+
+    debntb> /home/rev/bin/git-film -- /home/rev/dev/html2cup/node_modules/browserify/node_modules/process/browser.js
+
+diff --git a/media/ubuntu/home/rev/dev/html2cup/node_modules/browserify/node_modules/process/browser.js b/media/ubuntu/home/rev/dev/html2cup/node_modules/browserify/node_modules/process/browser.js
+index 8e1016a..10ebbc1 100644
+--- a/media/ubuntu/home/rev/dev/html2cup/node_modules/browserify/node_modules/process/browser.js
++++ b/media/ubuntu/home/rev/dev/html2cup/node_modules/browserify/node_modules/process/browser.js
+@@ -7,7 +7,7 @@ process.nextTick = (function () {
+     && window.setImmediate;
+     var canMutationObserver = typeof window !== 'undefined'
+     && window.MutationObserver;
+-    var canPost = typeof window !== 'undefined'
++    var canPost = false && typeof window !== 'undefined'
+     && window.postMessage && window.addEventListener
+     ;
+ 
+
+commit 96e0acbe568a9354ad3389a2e15f597acf6347ed
+Author: Michele Bini <michele.bini@gmail.com>
+Date:   Fri Oct 31 09:29:47 2014 +0100
+
+    debntb> /home/rev/bin/git-film -- /home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/level2/html.js
+
+diff --git a/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/level2/html.js b/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/level2/html.js
+index 10c97b2..240a1a1 100644
+--- a/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/level2/html.js
++++ b/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/level2/html.js
+@@ -554,8 +554,7 @@ define('HTMLElement', {
+     // form, etc). We start by wrapping dispatchEvent so we can forward events to
+     // the element's _eventDefault function (only events that did not incur
+     // preventDefault).
+-      dispatchEvent : function (event) {
+-	return;
++    dispatchEvent : function (event) {
+       var outcome = core.Node.prototype.dispatchEvent.call(this, event)
+ 
+       if (!event._preventDefault     &&
+
+commit 3651de3f7c505898f90999e8fadd7ef0a0f11af7
+Author: Michele Bini <michele.bini@gmail.com>
+Date:   Fri Oct 31 03:49:59 2014 +0100
+
+    debntb> /home/rev/bin/git-film -- /home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/browser/index.js
+
+diff --git a/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/browser/index.js b/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/browser/index.js
+index 069069d..86fcdc0 100644
+--- a/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/browser/index.js
++++ b/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/browser/index.js
+@@ -313,7 +313,7 @@ exports.createWindow = function(dom, options) {
+   // We need to set up self references using Contextify's getGlobal() so that
+   // the global object identity is correct (window === this).
+   // See Contextify README for more info.
+-  window.getGlobal = function() { return window } };
++  window.getGlobal = function() { return window };
+   window.dispose = function() { };
+   window.browser = { emit: function() { } };
+     
+
+commit a4b94696c86496e64ca112f155edeca8a3d9c5ec
+Author: Michele Bini <michele.bini@gmail.com>
+Date:   Fri Oct 31 03:49:21 2014 +0100
+
+    debntb> /home/rev/bin/git-film -- /home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/browser/index.js
+
+diff --git a/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/browser/index.js b/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/browser/index.js
+index eb944a8..069069d 100644
+--- a/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/browser/index.js
++++ b/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/browser/index.js
+@@ -316,7 +316,6 @@ exports.createWindow = function(dom, options) {
+   window.getGlobal = function() { return window } };
+   window.dispose = function() { };
+   window.browser = { emit: function() { } };
+-  window.getGlobal = global.getGlobal;
+     
+   // Set up the window as if it's a top level window.
+   // If it's not, then references will be corrected by frame/iframe code.
+@@ -324,7 +323,7 @@ exports.createWindow = function(dom, options) {
+   window.window = window.frames
+                 = window.self
+                 = window.parent
+-                = window.top = global;
++                = window.top = window;
+ 
+   return window;
+ };
+
+commit 32c2e23817d83dc09a2fd96a77940e12a593548f
+Author: Michele Bini <michele.bini@gmail.com>
+Date:   Fri Oct 31 03:48:32 2014 +0100
+
+    debntb> /home/rev/bin/git-film -- /home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/browser/index.js
+
+diff --git a/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/browser/index.js b/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/browser/index.js
+index f02f14b..eb944a8 100644
+--- a/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/browser/index.js
++++ b/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/browser/index.js
+@@ -313,8 +313,7 @@ exports.createWindow = function(dom, options) {
+   // We need to set up self references using Contextify's getGlobal() so that
+   // the global object identity is correct (window === this).
+   // See Contextify README for more info.
+-  var global = { getGlobal:function() { return global } };
+-
++  window.getGlobal = function() { return window } };
+   window.dispose = function() { };
+   window.browser = { emit: function() { } };
+   window.getGlobal = global.getGlobal;
+
+commit 804704c368f0f81af8bc15477e6a76d8a49de51f
+Author: Michele Bini <michele.bini@gmail.com>
+Date:   Fri Oct 31 03:46:50 2014 +0100
+
+    debntb> /home/rev/bin/git-film -- /home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/browser/index.js
+
+diff --git a/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/browser/index.js b/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/browser/index.js
+index e468bef..f02f14b 100644
+--- a/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/browser/index.js
++++ b/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/browser/index.js
+@@ -316,6 +316,7 @@ exports.createWindow = function(dom, options) {
+   var global = { getGlobal:function() { return global } };
+ 
+   window.dispose = function() { };
++  window.browser = { emit: function() { } };
+   window.getGlobal = global.getGlobal;
+     
+   // Set up the window as if it's a top level window.
+
+commit c867de40981c341b51b4357d241db7fef2bff9ed
+Author: Michele Bini <michele.bini@gmail.com>
+Date:   Fri Oct 31 03:39:47 2014 +0100
+
+    debntb> /home/rev/bin/git-film -- /home/rev/dev/html2cup/node_modules/zombie/lib/zombie/window.js
+
+diff --git a/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/lib/zombie/window.js b/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/lib/zombie/window.js
+index 9e46dd7..319b410 100644
+--- a/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/lib/zombie/window.js
++++ b/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/lib/zombie/window.js
+@@ -459,7 +459,6 @@ loadDocument = function(_arg) {
+ jsdomDispatchElement = HTML.Element.prototype.dispatchEvent;
+ 
+ HTML.Node.prototype.dispatchEvent = function(event) {
+-   return;
+   var browser, document, error, originalInScope, self, window, _ref;
+   self = this;
+   document = self.ownerDocument || self.document || self;
+
+commit e46be87037a533d45868a50233273be486e1247a
+Author: Michele Bini <michele.bini@gmail.com>
+Date:   Fri Oct 31 03:29:08 2014 +0100
+
+    debntb> /home/rev/bin/git-film -- /home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/browser/index.js
+
+diff --git a/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/browser/index.js b/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/browser/index.js
+index a6f9e84..e468bef 100644
+--- a/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/browser/index.js
++++ b/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/browser/index.js
+@@ -315,6 +315,7 @@ exports.createWindow = function(dom, options) {
+   // See Contextify README for more info.
+   var global = { getGlobal:function() { return global } };
+ 
++  window.dispose = function() { };
+   window.getGlobal = global.getGlobal;
+     
+   // Set up the window as if it's a top level window.
+
+commit c6551d66d8868b45ed08015d3cf41538be42bba9
+Author: Michele Bini <michele.bini@gmail.com>
+Date:   Fri Oct 31 03:20:17 2014 +0100
+
+    debntb> /home/rev/bin/git-film -- /home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/level2/html.js
+
+diff --git a/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/level2/html.js b/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/level2/html.js
+index 240a1a1..10c97b2 100644
+--- a/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/level2/html.js
++++ b/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/level2/html.js
+@@ -554,7 +554,8 @@ define('HTMLElement', {
+     // form, etc). We start by wrapping dispatchEvent so we can forward events to
+     // the element's _eventDefault function (only events that did not incur
+     // preventDefault).
+-    dispatchEvent : function (event) {
++      dispatchEvent : function (event) {
++	return;
+       var outcome = core.Node.prototype.dispatchEvent.call(this, event)
+ 
+       if (!event._preventDefault     &&
+
+commit 009f263c9f68dbc40c4902b3bf0877f683669d14
+Author: Michele Bini <michele.bini@gmail.com>
+Date:   Fri Oct 31 03:13:24 2014 +0100
+
+    debntb> /home/rev/bin/git-film -- /home/rev/dev/html2cup/node_modules/zombie/lib/zombie/window.js
+
+diff --git a/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/lib/zombie/window.js b/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/lib/zombie/window.js
+index 319b410..9e46dd7 100644
+--- a/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/lib/zombie/window.js
++++ b/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/lib/zombie/window.js
+@@ -459,6 +459,7 @@ loadDocument = function(_arg) {
+ jsdomDispatchElement = HTML.Element.prototype.dispatchEvent;
+ 
+ HTML.Node.prototype.dispatchEvent = function(event) {
++   return;
+   var browser, document, error, originalInScope, self, window, _ref;
+   self = this;
+   document = self.ownerDocument || self.document || self;
+
+
+commit 016780eb0a1d77d3f30ffae1b8603bba399a0980
+Author: Michele Bini <michele.bini@gmail.com>
+Date:   Fri Oct 31 03:07:33 2014 +0100
+
+    debntb> /home/rev/bin/git-film -- /home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/browser/index.js
+
+diff --git a/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/browser/index.js b/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/browser/index.js
+index 4987f88..a6f9e84 100644
+--- a/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/browser/index.js
++++ b/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/browser/index.js
+@@ -315,6 +315,8 @@ exports.createWindow = function(dom, options) {
+   // See Contextify README for more info.
+   var global = { getGlobal:function() { return global } };
+ 
++  window.getGlobal = global.getGlobal;
++    
+   // Set up the window as if it's a top level window.
+   // If it's not, then references will be corrected by frame/iframe code.
+   // Note: window.frames is maintained in the HTMLFrameElement init function.
+
+commit 489e50b4bd06c5b2d943e68cc8c77d75ac8e66fd
+Author: Michele Bini <michele.bini@gmail.com>
+Date:   Fri Oct 31 03:04:26 2014 +0100
+
+    debntb> /home/rev/bin/git-film -- /home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/browser/index.js
+
+diff --git a/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/browser/index.js b/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/browser/index.js
+index 63e93f6..4987f88 100644
+--- a/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/browser/index.js
++++ b/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/browser/index.js
+@@ -313,7 +313,7 @@ exports.createWindow = function(dom, options) {
+   // We need to set up self references using Contextify's getGlobal() so that
+   // the global object identity is correct (window === this).
+   // See Contextify README for more info.
+-  var global = { };
++  var global = { getGlobal:function() { return global } };
+ 
+   // Set up the window as if it's a top level window.
+   // If it's not, then references will be corrected by frame/iframe code.
+
+commit 4e62c2415d33ff0ccb6cdf05ed31e6af1c39e851
+Author: Michele Bini <michele.bini@gmail.com>
+Date:   Fri Oct 31 03:01:30 2014 +0100
+
+    debntb> /home/rev/bin/git-film -- /home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/browser/index.js
+
+diff --git a/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/browser/index.js b/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/browser/index.js
+index 1ce4e17..63e93f6 100644
+--- a/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/browser/index.js
++++ b/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/browser/index.js
+@@ -621,7 +621,7 @@ var browserAugmentation = exports.browserAugmentation = function(dom, options) {
+         defineGetter(window, name, function () { return frame.contentWindow; });
+       }
+     };
+-    this._parentWindow = window.getGlobal();
++    this._parentWindow = { };
+   });
+ 
+   defineGetter(dom.Document.prototype, 'defaultView', function() {
+
+commit 3035be670f3c667b7c4f9ae8b1a1fecbbaf346ab
+Author: Michele Bini <michele.bini@gmail.com>
+Date:   Fri Oct 31 03:00:00 2014 +0100
+
+    debntb> /home/rev/bin/git-film -- /home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/browser/index.js
+
+diff --git a/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/browser/index.js b/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/browser/index.js
+index a6f8c2b..1ce4e17 100644
+--- a/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/browser/index.js
++++ b/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/browser/index.js
+@@ -313,7 +313,7 @@ exports.createWindow = function(dom, options) {
+   // We need to set up self references using Contextify's getGlobal() so that
+   // the global object identity is correct (window === this).
+   // See Contextify README for more info.
+-  var global = window.getGlobal();
++  var global = { };
+ 
+   // Set up the window as if it's a top level window.
+   // If it's not, then references will be corrected by frame/iframe code.
+
+commit 3192915c9712ae24110cda1142f1c1997539334f
+Author: Michele Bini <michele.bini@gmail.com>
+Date:   Fri Oct 31 02:36:58 2014 +0100
+
+    debntb> /home/rev/bin/git-film -- /home/rev/dev/html2cup/node_modules/zombie/lib/zombie/document.js
+
+diff --git a/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/lib/zombie/document.js b/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/lib/zombie/document.js
+index 5a52b33..9a9e9f7 100644
+--- a/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/lib/zombie/document.js
++++ b/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/lib/zombie/document.js
+@@ -7,8 +7,6 @@ HTML = JSDOM.dom.level3.html;
+ 
+ Path = require("path");
+ 
+-JSDOMSelectors = require(Path.resolve(require.resolve("jsdom"), "../jsdom/selectors/index"));
+-
+ module.exports = createDocument = function(browser, window, referer) {
+   var document, features, jsdomBrowser;
+   features = {
+@@ -23,7 +21,6 @@ module.exports = createDocument = function(browser, window, referer) {
+   document = new jsdomBrowser.HTMLDocument({
+     referrer: referer
+   });
+-  JSDOMSelectors.applyQuerySelectorPrototype(HTML);
+   if (browser.hasFeature("scripts", true)) {
+     features.ProcessExternalResources.push("script");
+     features.FetchExternalResources.push("script");
+
+
+commit 1f0a0b4c7b5690ac4afcbffc295aa2d415a0a387
+Author: Michele Bini <michele.bini@gmail.com>
+Date:   Fri Oct 31 02:32:58 2014 +0100
+
+    debntb> /home/rev/bin/git-film -- /home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/browser/index.js
+
+diff --git a/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/browser/index.js b/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/browser/index.js
+index 12ec962..a6f8c2b 100644
+--- a/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/browser/index.js
++++ b/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/browser/index.js
+@@ -14,7 +14,7 @@ var http          = require('http'),
+     defineGetter  = require('../utils').defineGetter,
+     defineSetter  = require('../utils').defineSetter,
+     createFrom    = require('../utils').createFrom,
+-    Contextify    = require('contextify');
++    Contextify    = null;
+ 
+ function matchesDontThrow(el, selector) {
+   try {
+@@ -308,7 +308,7 @@ exports.createWindow = function(dom, options) {
+ 
+   var window = new DOMWindow(options);
+ 
+-  Contextify(window);
++  // Contextify(window);
+ 
+   // We need to set up self references using Contextify's getGlobal() so that
+   // the global object identity is correct (window === this).
+
+commit 33a853beeca1b210c29cbc1ce62007ba5cb5b0d5
+Author: Michele Bini <michele.bini@gmail.com>
+Date:   Fri Oct 31 02:01:59 2014 +0100
+
+    debntb> /home/rev/bin/git-film -- /home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/node_modules/cssstyle/lib/CSSStyleDeclaration.js
+
+diff --git a/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/node_modules/cssstyle/lib/CSSStyleDeclaration.js b/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/node_modules/cssstyle/lib/CSSStyleDeclaration.js
+index dbe16e3..32bf9d2 100644
+--- a/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/node_modules/cssstyle/lib/CSSStyleDeclaration.js
++++ b/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/node_modules/cssstyle/lib/CSSStyleDeclaration.js
+@@ -193,13 +193,13 @@ Object.defineProperties(CSSStyleDeclaration.prototype, {
+ 
+ var LazyDefinition = function (property, modulePath) {
+     this.get = function () {
+-        var definition = require(modulePath).definition;
++        var definition = null;
+         Object.defineProperty(this, property, definition);
+         return this[property];
+     };
+ 
+     this.set = function (v) {
+-        var definition = require(modulePath).definition;
++        var definition = null;
+         Object.defineProperty(this, property, definition);
+         this[property] = v;
+     };
+
+
+commit d84e6f87c2a0a5d615a02ca18aec6b2d4506af9c
+Author: Michele Bini <michele.bini@gmail.com>
+Date:   Fri Oct 31 02:00:14 2014 +0100
+
+    debntb> /home/rev/bin/git-film -- /home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/level2/style.js
+
+diff --git a/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/level2/style.js b/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/level2/style.js
+index 7e82736..5393670 100644
+--- a/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/level2/style.js
++++ b/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/level2/style.js
+@@ -5,7 +5,7 @@ var core = require("./core").dom.level2.core,
+     defineSetter = utils.defineSetter,
+     inheritFrom = utils.inheritFrom,
+     cssom = require("cssom"),
+-    cssstyle = null,
++    cssstyle = require("cssstyle"),
+     assert = require('assert');
+ 
+ // What works now:
+@@ -32,7 +32,7 @@ core.CSSRule = cssom.CSSRule;
+ core.CSSStyleRule = cssom.CSSStyleRule;
+ core.CSSMediaRule = cssom.CSSMediaRule;
+ core.CSSImportRule = cssom.CSSImportRule;
+-core.CSSStyleDeclaration = { };
++core.CSSStyleDeclaration = cssstyle.CSSStyleDeclaration;
+ 
+ // Relavant specs
+ // http://www.w3.org/TR/DOM-Level-2-Style (2000)
+
+commit 3cb42f1c084191ff9fc9e048083a7d1e57fa8586
+Author: Michele Bini <michele.bini@gmail.com>
+Date:   Fri Oct 31 01:58:53 2014 +0100
+
+    debntb> /home/rev/bin/git-film -- /home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/level2/style.js
+
+diff --git a/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/level2/style.js b/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/level2/style.js
+index cdb9a91..7e82736 100644
+--- a/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/level2/style.js
++++ b/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/level2/style.js
+@@ -32,7 +32,7 @@ core.CSSRule = cssom.CSSRule;
+ core.CSSStyleRule = cssom.CSSStyleRule;
+ core.CSSMediaRule = cssom.CSSMediaRule;
+ core.CSSImportRule = cssom.CSSImportRule;
+-core.CSSStyleDeclaration = cssstyle.CSSStyleDeclaration;
++core.CSSStyleDeclaration = { };
+ 
+ // Relavant specs
+ // http://www.w3.org/TR/DOM-Level-2-Style (2000)
+
+commit eb20140d93f4250b3b7f464752a35a5eefed39d9
+Author: Michele Bini <michele.bini@gmail.com>
+Date:   Fri Oct 31 01:57:16 2014 +0100
+
+    debntb> /home/rev/bin/git-film -- /home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/level2/style.js
+
+diff --git a/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/level2/style.js b/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/level2/style.js
+index 5393670..cdb9a91 100644
+--- a/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/level2/style.js
++++ b/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/level2/style.js
+@@ -5,7 +5,7 @@ var core = require("./core").dom.level2.core,
+     defineSetter = utils.defineSetter,
+     inheritFrom = utils.inheritFrom,
+     cssom = require("cssom"),
+-    cssstyle = require("cssstyle"),
++    cssstyle = null,
+     assert = require('assert');
+ 
+ // What works now:
+
+
+commit ea789743d8d7a31a26a2d030b8f013e70d5b23e8
+Author: Michele Bini <michele.bini@gmail.com>
+Date:   Fri Oct 31 01:56:45 2014 +0100
+
+    debntb> /home/rev/bin/git-film -- /home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/browser/index.js
+
+diff --git a/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/browser/index.js b/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/browser/index.js
+index bfd519f..12ec962 100644
+--- a/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/browser/index.js
++++ b/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/browser/index.js
+@@ -9,7 +9,7 @@ var http          = require('http'),
+     Location      = require('./location'),
+     History       = require('./history'),
+     NOT_IMPLEMENTED = require('./utils').NOT_IMPLEMENTED,
+-    CSSStyleDeclaration = require('cssstyle').CSSStyleDeclaration,
++    CSSStyleDeclaration = null,
+     toFileUrl = require('../utils').toFileUrl,
+     defineGetter  = require('../utils').defineGetter,
+     defineSetter  = require('../utils').defineSetter,
+
+
+commit 529c051492c024a681a1f9eb0957bbeaa0c2b226
+Author: Michele Bini <michele.bini@gmail.com>
+Date:   Fri Oct 31 00:11:52 2014 +0100
+
+    debntb> /home/rev/bin/git-film -- /home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/level2/html.js
+
+diff --git a/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/level2/html.js b/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/level2/html.js
+index 7e5e018..240a1a1 100644
+--- a/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/level2/html.js
++++ b/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/jsdom/lib/jsdom/level2/html.js
+@@ -1203,18 +1203,7 @@ define('HTMLCanvasElement', {
+     'align'
+   ],
+   elementBuilder: function (element) {
+-    // require node-canvas and catch the error if it blows up
+-    try {
+-      var canvas = new (require('canvas'))(0,0);
+-      for (var attr in element) {
+-        if (!canvas[attr]) {
+-          canvas[attr] = element[attr];
+-        }
+-      }
+-      return canvas;
+-    } catch (e) {
+       return element;
+-    }
+   }
+ });
+ 
+
+
+commit e9cc13ffab1c655161ae3646bd5a1685ff1bbaa2
+Author: Michele Bini <michele.bini@gmail.com>
+Date:   Fri Oct 31 00:08:56 2014 +0100
+
+    debntb> /home/rev/bin/git-film -- /home/rev/dev/html2cup/node_modules/zombie/node_modules/encoding/index.js
+
+diff --git a/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/encoding/index.js b/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/encoding/index.js
+index aa3bc1b..4d5f777 100644
+--- a/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/encoding/index.js
++++ b/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/node_modules/encoding/index.js
+@@ -1,9 +1,5 @@
+ var Iconv, iconvLite = require("iconv-lite");
+ 
+-try{
+-    Iconv  = require("iconv").Iconv;
+-}catch(E){}
+-
+ // Expose to the world
+ module.exports.convert = convert;
+ 
+@@ -104,4 +100,4 @@ function checkEncoding(name){
+         replace(/^us[\-_]?ascii$/i, "ASCII").
+         toUpperCase();
+     return name;
+-}
+\ No newline at end of file
++}
+
+
+commit 48c4fb837a25ded1acacb150e89da5c66180a649
+Author: Michele Bini <michele.bini@gmail.com>
+Date:   Thu Oct 30 23:57:27 2014 +0100
+
+    debntb> /home/rev/bin/git-film -- /home/rev/dev/html2cup/node_modules/zombie/lib/zombie/index.js
+
+diff --git a/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/lib/zombie/index.js b/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/lib/zombie/index.js
+index 891a39d..3d7d203 100644
+--- a/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/lib/zombie/index.js
++++ b/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/lib/zombie/index.js
+@@ -26,8 +26,10 @@ visit = function(url, options, callback) {
+   }
+ };
+ 
++protocol = require("./protocol")
++
+ listen = function(port, callback) {
+-  return require("./protocol").listen(port, callback);
++  return protocol.listen(port, callback);
+ };
+ 
+ Browser.listen = listen;
+
+commit f20dc2ed1f266654108f4668f9f5bee32079cf92
+Author: Michele Bini <michele.bini@gmail.com>
+Date:   Thu Oct 30 23:56:52 2014 +0100
+
+    debntb> /home/rev/bin/git-film -- /home/rev/dev/html2cup/node_modules/zombie/lib/zombie/index.js
+
+diff --git a/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/lib/zombie/index.js b/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/lib/zombie/index.js
+index 671c818..891a39d 100644
+--- a/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/lib/zombie/index.js
++++ b/media/ubuntu/home/rev/dev/html2cup/node_modules/zombie/lib/zombie/index.js
+@@ -27,7 +27,7 @@ visit = function(url, options, callback) {
+ };
+ 
+ listen = function(port, callback) {
+-  return require("./zombie/protocol").listen(port, callback);
++  return require("./protocol").listen(port, callback);
+ };
+ 
+ Browser.listen = listen;
+

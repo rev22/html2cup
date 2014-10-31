@@ -16,7 +16,7 @@ clean:
 	(sh -c "bin/html2cup $< >$@.new" && mv $@.new $@) || rm -f $@
 
 %.js: %.coffee
-	coffee -c $<
+	coffee -bc $<
 
 
 %.php: %.in.phpcup
@@ -31,3 +31,7 @@ clean:
 %.out.phpcup: %.php
 	script/php2cup_body $< $@
 
+
+%.js: %.browserify.js
+	# browserify -r fs:browserify-fs $< -o $@ || rm $@
+	browserify $< -o $@ || rm $@
