@@ -24,7 +24,8 @@
     "devDependencies": {
 	"coffee-script": ">=1.3.0 <3.0.0",
 	"coffeemake": ">=0.2.6",
-	"MD5": "*"
+	"MD5": "*",
+	"browserify": "*"
     },
     "engines": {
 	"node": ">=0.6"

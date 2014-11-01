@@ -36,6 +36,7 @@ rootLayout = ({ head, header, body, footer, tail, minheight, minwidth })->
                       
                       # y = ((x * 2) ^ 1000 px) _ x
                       #      min-width width     max-width
+                      # This part does not seem to work on my firefox
                       @div style:"width:200%;max-width:50em;min-width:100%;height:100%;overflow:hidden", ->
                         @div style:"position:relative;width:100%;height:100%;display:table", ->
                         # @div style:"position:relative;width:100%;max-width:100%;height:100%;overflow:auto", ->
