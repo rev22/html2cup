@@ -6,7 +6,9 @@ module.exports =
   phpLib: require './phpLib'
   path: require 'path'
   htmlcupCode: "require('html2cup')"
-  html2cup: ({file, fileContent, php, inBody, refcoffee, includeChunks, echo, print, log, readyy, htmlcupCode })->
+  fs: require 'fs'
+  html2cup: ({file, fileContent, php, inBody, refcoffee, includeChunks, echo, print, log, readyy, htmlcupCode, fs })->
+    fs ?= @fs
     htmlcupCode ?= @htmlcupCode
     includeChunks = false unless php
 
@@ -54,12 +56,16 @@ module.exports =
     cleanupTempFiles = ->
       fs.unlinkSync x for x in tempFiles
 
+    php?.reset()
+
     php?.apply ->
-      @x = fs.readFileSync(file).toString()
+      file ?= "input"
+      @x = fileContent ? fs.readFileSync(file).toString()
       @x = @strip @x
       tempFiles.push(@temp = file + '.temp-php.html')
       fs.writeFileSync @temp, @x
       file = @temp
+      fileContent and= @x
 
     @zombie? and inBody?.apply ->
       @x = fs.readFileSync(file).toString()

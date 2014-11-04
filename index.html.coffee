@@ -79,17 +79,17 @@ rootLayout.call htmlcup,
         .editArea { height:100%;width:100%;box-sizing:border-box; }
         """
       @div class:"thisHeader", ->
-        @select disabled:"1", ->
-          @option "HTML"
-          @option "PHP"
+        @select id:"inputSelect", ->
+          @option value:"html", "HTML"
+          @option value:"php", "PHP"
         @button id:"fromButton", class:"arrow", "«"
         @label id:"autoButton", class:"button button-on", ->
           @input type:"checkbox", checked:"1", onchange:'this.parentNode.setAttribute("class", "button button-" + (this.checked ? "on" : "off"))'
           @span id:"autoButtonText", "Auto"
         @button id:"toButton", class:"arrow", "»"
-        @select disabled:"1", ->
-          @option "CoffeeScript (htmlcup)"
-          @option "Reflective CoffeeScript (htmlcup)"
+        @select id:"outputSelect", ->
+          @option value:"coffee", "CoffeeScript (htmlcup)"
+          @option value:"refcoffee", "Reflective CoffeeScript (htmlcup)"
   body: (opts)->
       @style """
         textarea { background: black; color: #ddd; }
@@ -119,7 +119,7 @@ rootLayout.call htmlcup,
       @a href:"https://github.com/rev22/reflective-coffeescript", "Reflective Coffeescript"
   tail: ->
     @script src:"https://github.com/ajaxorg/ace-builds/raw/master/src-min-noconflict/ace.js", type:"text/javascript", charset:"utf-8"
-    @script src:"pack.js?xxx"
+    @script src:"pack.js?mq"
     @coffeeScript ->
       inject = (options, callback) ->
         baseUrl = options.baseUrl or "../../src-noconflict"

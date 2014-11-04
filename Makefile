@@ -34,4 +34,4 @@ clean:
 
 %.js: %.browserify.js
 	# browserify -r fs:browserify-fs $< -o $@ || rm $@
-	browserify $< -o $@ || rm $@
+	browserify -t coffeeify $< -o $@ || rm $@

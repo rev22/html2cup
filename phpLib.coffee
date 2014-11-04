@@ -4,6 +4,7 @@
 
 module.exports =
   magic: 'PHP'
+  reset: -> @chunks = { }
   chunks: { }
   hash: do (md5 = require('MD5')) -> (x)-> md5(x).substr(0,8)
   strip: (x)->

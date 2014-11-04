@@ -9,7 +9,13 @@ process.stdout ?= { }
 process.stdout.isTTY ?= -> false
 process.stdout.write = ->
 
+filez = { }
+(require 'fs').writeFileSync = (x, d)->
+  filez[x] = d
+(require 'fs').unlinkSync = (x)->
+  delete filez[x]
 (require 'fs').readFileSync = (x)->
+  return filez[x] if filez[x]?
   if /mime[.]types$/.test(x)
     return """
       application/javascript				js
@@ -75,7 +81,7 @@ window.app = app =
 
   CoffeeScript: require 'reflective-coffeescript'
 
-  view: ((x)-> r = {}; r[v] = document.getElementById(v) for v in x.split(","); r ) "toButton,fromButton,autoButtonText,htmlArea,htmlcupArea"
+  view: ((x)-> r = {}; r[v] = document.getElementById(v) for v in x.split(","); r ) "toButton,fromButton,autoButtonText,htmlArea,htmlcupArea,inputSelect,outputSelect"
 
   accumulator: [ ]
 
@@ -100,13 +106,35 @@ window.app = app =
     # @fs.writeFileSync = (x)=> @readFileSync(x)
     @setupAutoconvert()
     @ace? and @setupAce()
+    app = @
     @view.htmlArea.setupTransform = (ace)->
-      ace.getSession().setMode("ace/mode/html")
+      app.view.htmlArea.aceTransformed = ace
+      ace.getSession().setMode("ace/mode/#{app.inputFormat}")
       ace.setTheme("ace/theme/merbivore")
     @view.htmlcupArea.setupTransform = (ace)->
+      app.view.htmlcupArea.aceTransformed = ace
       ace.getSession().setMode("ace/mode/coffee")
       ace.setTheme("ace/theme/merbivore")
+    @view.inputSelect.onchange = ->
+      if @value in [ 'html', 'php' ]
+        app.inputFormat = @value
+      else throw "unknown input format #{@value}"
+      app.toCup()
+      app.view.htmlArea.aceTransformed?.getSession().setMode("ace/mode/#{app.inputFormat}")
+    @view.outputSelect.onchange = ->
+      if @value in [ 'coffee', 'refcoffee' ]
+        app.outputFormat = @value
+      else throw "unknown output format #{@value}"
+      app.fromCup()
+      app.view.htmlcupArea.aceTransformed?.getSession().setMode(app.outputFormat is 'coffee' then "ace/mode/coffee" else app.aceRefcoffeeMode())
 
+  aceRefcoffeeMode: ->
+    ace = @window.ace
+    require('./ace-refcoffee-mode.coffee')({ ace })
+    "ace/mode/refcoffee" # :-)))
+    
+  inputFormat: 'html'
+  outputFormat: 'coffee'
 
   # ace: ace ? null
   # setupAce: @> @ace.edit(@view.htmlArea)
@@ -131,10 +159,10 @@ window.app = app =
       @isConverting = true
       fileContent = @view.htmlArea.value
 
-      php = null
-      inBody = null
-      refcoffee = false
-      includeChunks = false
+      php = if @inputFormat is 'php' then true else null
+      inBody = true
+      refcoffee = if @outputFormat is 'refcoffee' then true else null
+      includeChunks = true
       # file = "x.html"
       # @writeFileSync file, fileContent
 
