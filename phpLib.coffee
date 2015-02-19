@@ -48,17 +48,17 @@ module.exports =
   memberp: (x)-> @chunks[x]?
   dress: (x)->
     x = x.replace /php[0-9a-z]{8}=""/g, (x)=> @chunks[x.substring(3,11)] ? "FAIL#{x}"
-    x = x.replace /PHP[0-9a-z]{8}/g, (x)=> @chunks[x.substring(3,11)] ? "FAIL#{x}"
+    x = x.replace /PHP[0-9a-z]{8}/ig, (x)=> @chunks[x.substring(3,11)] ? "FAIL#{x}"
     x
-  idp: (x)-> /^PHP[0-9a-z]{8}/.test(x) and @memberp(x.substring(3,11))
-  idp_strict: (x)-> /^PHP[0-9a-z]{8}$/.test(x) and @memberp(x.substring(3,11))
+  idp: (x)-> /^PHP[0-9a-z]{8}/i.test(x) and @memberp(x.substring(3,11))
+  idp_strict: (x)-> /^PHP[0-9a-z]{8}$/i.test(x) and @memberp(x.substring(3,11))
   id2key: (x)->
-    if /PHP[0-9a-z]{8}/.test(x)
+    if /PHP[0-9a-z]{8}/i.test(x)
       x.substring(3,11)
   split: (x)->
     l = []
     p = ""
-    for y in x.split /(PHP[0-9a-z]{8})/
+    for y in x.split /(PHP[0-9a-z]{8})/i
       if @memberp(y)
         p = p + y
         throw p
@@ -69,7 +69,7 @@ module.exports =
       l.push p
     l
   hasAnyChunk: (x)->
-    for y in x.split /PHP([0-9a-z]{8})/
+    for y in x.split /PHP([0-9a-z]{8})/i
       if @memberp(y)
         return true
     return false

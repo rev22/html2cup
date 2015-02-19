@@ -1,4 +1,6 @@
 # Copyright (c) 2014 Michele Bini
+#
+# version "0.2.2"
 
 # MIT license
 
@@ -93,7 +95,7 @@ htmlcup = htmlcup.extendObject
         s = arg
         break
       for x,y of arg
-        if y?
+        if y? and y isnt ""
           @printHtml " #{x}=\"#{@quoteText y}\""
         else
           @printHtml " #{x}"
