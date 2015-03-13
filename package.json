@@ -1,6 +1,6 @@
 {
     "name": "html2cup",
-    "version": "2.2.0-pre.3",
+    "version": "2.2.0",
     "author": "Michele Bini <michele.bini@gmail.com>",
     "description": "Convert HTML and PHP views to CoffeeScript and back",
     "keywords": [ "HTML", "CoffeeScript" ],
