@@ -1,28 +1,28 @@
 {
     "name": "html2cup",
-    "version": "1.2.0",
+    "version": "2.2.0-pre",
     "author": "Michele Bini <michele.bini@gmail.com>",
     "description": "Convert HTML and PHP views to CoffeeScript and back",
     "keywords": [ "HTML", "CoffeeScript" ],
-    "homepage": "http://github.com/rev22/htmlcup",
-    "bugs": { "url": "http://github.com/rev22/htmlcup/issues" },
+    "homepage": "http://github.com/rev22/html2cup",
+    "bugs": { "url": "http://github.com/rev22/html2cup/issues" },
     "files": [
 	"AUTHORS",
-	"COPYING",
+	"LICENSE",
+	"README",
 	"Makefile",
-	"README.md",
-	"htmlcup.coffee",
-	"htmlcup.js",
-	"test/MIT-LICENSE",
-	"test/extending-library.html",
-	"test/extending-library.html.coffee",
-	"test/primer.html",
-	"test/primer.html.coffee",
-	"test/test.html",
-	"test/test.html.coffee"
-    ],    
+	"bin/html2cup",
+	"html2cup.coffee",
+	"html2cup.js",
+	"phpLib.coffee",
+	"phpLib.js",
+	"script/html2cup",
+	"script/php2cup",
+	"script/php2cup_body"
+    ], 
     "dependencies": {
 	"coffee-script": ">=1.3.0 <3.0.0",
+	"zombie": "2.1.1",
 	"MD5": "*"
     },
     "devDependencies": {
@@ -33,7 +33,7 @@
     },
     "repository": {
 	"type": "git",
-	"url": "http://github.com/rev22/htmlcup.git"
+	"url": "http://github.com/rev22/html2cup.git"
     },
     "main": "html2cup.coffee",
     "license": "MIT"
